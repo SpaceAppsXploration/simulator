@@ -71,3 +71,11 @@ class SocketConnection(SockJSConnection):
     def on_message(self, msg):
         self.send_message({ 'status': 200 }, 'status')
         self.send_message({ 'token': msg }, 'token')
+
+    def on_close(self):
+        """
+        Remove client from pool. Unlike Socket.IO connections are not
+        re-used on e.g. browser refresh.
+        """
+        self.clients.remove(self)
+        return super(Connection, self).on_close()

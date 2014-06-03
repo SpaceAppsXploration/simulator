@@ -25,6 +25,6 @@ Start local server:
 
 `cd simulator`
 
-`python3.3 wsgi.py`
+`python3.3 astroloop.py`
 
 Check if working: go to [localhost:8080](http://localhost:8080) in your browser

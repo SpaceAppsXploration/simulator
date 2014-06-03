@@ -21,30 +21,24 @@
 
     </div>
 </div>
-<div class="row">
-    <hr5>
-    <div id="data">
-    <div class="row">
-      <a class="sun" title="sun" href="#sunspeed">Sun</a>
-      <a class="mercury" title="mercury" href="#mercuryspeed">Mercury</a>
-      <a class="venus" title="venus" href="#venusspeed">Venus</a>
-      <a class="earth active" title="earth" href="#earthspeed">Earth</a>
-      <a class="mars" title="mars" href="#marsspeed">Mars</a>
-      <a class="jupiter" title="jupiter" href="#jupiterspeed">Jupiter</a>
-      <a class="saturn" title="saturn" href="#saturnspeed">Saturn</a>
-      <a class="uranus" title="uranus" href="#uranusspeed">Uranus</a>
-      <a class="neptune" title="neptune" href="#neptunespeed">Neptune</a>
-      <a class="halley" title="halley" href="#neptunespeed">Halley Comet</a>
-      <a class="beyond" title="beyond" href="#neptunespeed">Beyond The System</a>
-      <a class="moon" title="moon" href="#neptunespeed">Moon</a>
-      <a class="asteroids" title="asteroids" href="#neptunespeed">Asteroids Belt</a>
+<div class="row" style="margin-top:20px;">
+    <div id="data" style="padding-top:45px;">
+    <div class="row" >
+      {% for t in targets %}
+      {% if t['slug'] == 'earth' %}
+      <a class="{{escape(t['slug'])}} active" title="{{escape(t['slug'])}}" href="#{{escape(t['slug'])}}speed?target={{escape(t['slug'])}}">{{escape(t['name'])}}</a>
+      {% else %}
+      <a class="{{escape(t['slug'])}}" title="{{escape(t['slug'])}}" href="#{{escape(t['slug'])}}speed?target={{escape(t['slug'])}}">{{escape(t['name'])}}</a>
+      {% end %}
+      {% end %}
     </div>
+    <hr>
     <div class="row">
       <a class="btn btn-primary" title="go" href="/">Design Mission</a>  
     </div>
     </div>
 </div>
-<div class="row" style="height:85%;">
+<div class="row" style="height:85%;" style="margin-bottom:40px;">
     <div id="controls" style="width:350px; height:60%;border:1px solid #FFF;">
         <h2>Infos/Image from REST endpoints</h2>
     </div>
@@ -144,9 +138,9 @@
 
 <script type="text/javascript">
 
-
-
 $(window).load(function(){
+
+/* Opening Socket */
 
 msg = 'shake hand ' + Math.random();
 
@@ -162,19 +156,21 @@ function connect(url, auth_json) {
     };
 }
 
-connect("http://127.0.0.1:8080/echo", msg);
+connect("http://127.0.0.1:8080/connect", msg);
 
+/* Info Updating */
 
-  var body = $("#container"),
-      universe = $("#universe"),
-      solarsys = $("#solar-system");
+  var solarsys = $("#solar-system");
 
-  $("#data a").click(function(e) {
+  $("#data .row a").click(function(e) {
     var ref = $(this).attr("class");
     solarsys.removeClass().addClass(ref);
     $(this).parent().find('a').removeClass('active');
     $(this).addClass('active');
-    defaultPrevented;
+
+    //$.getJSON( "ajax/test.json", function( data ) {});
+    
+    e.defaultPrevented;
   });
 
 
@@ -182,5 +178,55 @@ connect("http://127.0.0.1:8080/echo", msg);
 
 </script>
 
+<style type="text/css">
+/*
+  Copyright (c) 2012 Julian Garnier
+  Licensed under the MIT license
+  @JulianGarnier
+*/
+
+/* --------------------------------------------------------------------------- text infos data */
+
+/* --------------------------------------------------------------------------- speed, circum, distances */
+
+.set-speed #sun dl.infos dd:after {
+  content: 'Orbit Velocity: 0 km/h \A Equatorial Circum.: 4,370,005 km \A Distance From Sun: 0 Km \A From Earth: 149,598,262 km';
+  white-space: pre; }
+
+.set-speed #mercury dl.infos dd:after {
+  content: 'Orbit Velocity: 170,503 km/h \A Equatorial Circum.: 15,329 km \A Distance From Sun: 57,909,227 km \A From Earth: np'; 
+  white-space: pre;}
+
+.set-speed #venus dl.infos dd:after {
+  content: 'Orbit Velocity: 126,074 km/h \A Equatorial Circum.: 38,024 km \A Distance From Sun: 108,209,475 km \A From Earth: np'; 
+  white-space: pre; }
+
+.set-speed #earth dl.infos dd:after {
+  content: 'Orbit Velocity: 107,218 km/h \A Equatorial Circum.: 40,030 km \A Distance From Sun: 149,598,262 km \A From Earth: 0 Km'; 
+  white-space: pre; }
+
+.set-speed #mars dl.infos dd:after {
+  content: 'Orbit Velocity: 86,677 km/h \A Equatorial Circum.: 21,296 km \A Distance From Sun: 227,943,824 km \A From Earth: np'; 
+  white-space: pre; }
+
+.set-speed #jupiter dl.infos dd:after {
+  content: 'Orbit Velocity: 47,002 km/h \A Equatorial Circum.: 439,263 km \A Distance From Sun: 778,340,821 km \A From Earth: np'; 
+  white-space: pre; } 
+
+.set-speed #saturn dl.infos dd:after {
+  content: 'Orbit Velocity: 34,701 km/h \A Equatorial Circum.: 365,882 km \A Distance From Sun: 1,426,666,422 km \A From Earth: np'; 
+  white-space: pre;}
+
+.set-speed #uranus dl.infos dd:after {
+  content: 'Orbit Velocity: 24,477 km/h \A Equatorial Circum.: 159,354 km \A Distance From Sun: 2,870,658,186 km \A From Earth: np'; 
+  white-space: pre;}
+
+.set-speed #neptune dl.infos dd:after {
+  content: 'Orbit Velocity: 19,566 km/h \A Equatorial Circum.: 154,704 km \A Distance From Sun: 4,498,396,441 km \A From Earth: np'; 
+  white-space: pre;}
+
+</style>
+
 </body>
 </html>
+

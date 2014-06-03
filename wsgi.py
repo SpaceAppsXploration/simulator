@@ -19,10 +19,11 @@ if __name__ == '__main__':
     import logging
     logging.getLogger().setLevel(logging.DEBUG)
 
-    EchoRouter = SockJSRouter(EchoConnection, '/echo')
+    SocketRouter  = SockJSRouter(SocketConnection, '/connect')
 
     app = tornado.web.Application(
-            [(r"/", IndexHandler)] + EchoRouter.urls,
+            [(r"/", IndexHandler)] + \
+            SocketRouter.urls,
             (r"/static/(.*)", web.StaticFileHandler, {"path": settings['static_path']}),
             **settings
     )

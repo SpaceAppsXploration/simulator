@@ -13,11 +13,11 @@ Activate your venv: `source {/path/to/your/venv}/bin/activate`
 
 Install dependencies into the venv: 
 
-`easy_install pip3`
+`easy_install pip`
 
-`pip3 tornado`
+`pip tornado`
 
-`pip3 sockjs-tornado`
+`pip sockjs-tornado`
 
 Clone repository: `git clone https://github.com/SpaceAppsXploration/simulator`
 

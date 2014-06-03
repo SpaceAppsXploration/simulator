@@ -5,13 +5,13 @@ import tornado.web as web
 
 from sockjs.tornado import SockJSRouter
 
-from Socketing.connections import *
-from Handling.handlers import *
+from socketing.connections import *
+from handling.handlers import *
 
 PATH = os.path.dirname(__file__)
 
 settings = {
-    'template_path': os.path.join(PATH, "Templates"),
+    'template_path': os.path.join(PATH, "templates"),
     'static_path': os.path.join(PATH, 'static')
 }
 
@@ -26,6 +26,6 @@ if __name__ == '__main__':
             (r"/static/(.*)", web.StaticFileHandler, {"path": settings['static_path']}),
             **settings
     )
-    app.listen(3000)
+    app.listen(8080)
     ioloop.IOLoop.instance().start()
 

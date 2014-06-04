@@ -65,12 +65,12 @@ class SocketConnection(SockJSConnection):
         Request the client to authenticate and add them to client pool.
         """
         token = request.headers
-        self.send_message({ 'shake_hand': 200 }, 'shake_hand')
+        #self.send_message({ 'shake_hand': 200 }, 'shake_hand')
         self.clients.add(self)
 
     def on_message(self, msg):
-        self.send_message({ 'status': 200 }, 'status')
-        self.send_message({ 'token': msg }, 'token')
+        #echo only server
+        self.send_message({ 'status': 200, 'msg': str(msg) }, 'status')
 
     def on_close(self):
         """
@@ -78,4 +78,4 @@ class SocketConnection(SockJSConnection):
         re-used on e.g. browser refresh.
         """
         self.clients.remove(self)
-        return super(Connection, self).on_close()
+        return super(SocketConnection, self).on_close()

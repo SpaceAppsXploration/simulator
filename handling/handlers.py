@@ -18,6 +18,11 @@ class IndexHandler(tornado.web.RequestHandler):
         else:
             jsonp = response.body.decode("utf-8")
             targets = json.loads(response.body.decode("utf-8"))
-            print(jsonp)
+            #print(jsonp)
             targets = [t for t in targets if t['use_in_sim'] == True]
             return self.render('index.html', targets=targets, jsonp=jsonp)
+
+
+class TestHandler(tornado.web.RequestHandler):
+    def get(self):
+        return self.render('cursor-test.html')

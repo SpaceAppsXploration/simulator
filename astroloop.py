@@ -22,7 +22,8 @@ if __name__ == '__main__':
     SocketRouter  = SockJSRouter(SocketConnection, '/connect')
 
     app = tornado.web.Application(
-            [(r"/", IndexHandler)] + \
+            [(r"/", IndexHandler),
+            (r"/pointer_test", TestHandler)] + \
             SocketRouter.urls,
             (r"/static/(.*)", web.StaticFileHandler, {"path": settings['static_path']}),
             **settings

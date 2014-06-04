@@ -26,15 +26,15 @@
     <div class="row" >
       {% for t in targets %}
         {% if t['slug'] == 'earth' %}
-        <a class="{{escape(t['slug'])}} active" title="{{escape(t['slug'])}}" href="#{{escape(t['slug'])}}speed?target={{escape(t['slug'])}}">{{escape(t['name'])}}</a>
+        <a class="{{escape(t['slug'])}} active" title="{{escape(t['slug'])}}" href="#{{escape(t['slug'])}}speed">{{escape(t['name'])}}</a>
         {% else %}
-        <a class="{{escape(t['slug'])}}" title="{{escape(t['slug'])}}" href="#{{escape(t['slug'])}}speed?target={{escape(t['slug'])}}">{{escape(t['name'])}}</a>
+        <a class="{{escape(t['slug'])}}" title="{{escape(t['slug'])}}" href="#{{escape(t['slug'])}}speed">{{escape(t['name'])}}</a>
         {% end %}
       {% end %}
     </div>
     <hr>
     <div class="row">
-      <a class="btn btn-primary" title="go" href="/">Design Mission</a>  
+      <a class="btn btn-primary" id="design" title="go" destination="earth">Design Mission</a>  
     </div>
     </div>
 </div>
@@ -138,47 +138,78 @@
 
 <script type="text/javascript">
 
-$(window).load(function(){
+
 
 /* Opening Socket */
 
 msg = 'shake hand ' + Math.random();
 
 var recInterval = null;
-var socket = null;
+var sock = null;
 
 var connect = function(url, auth_json) {
-    var sock = new SockJS(url, null, {
+    sock = new SockJS(url, null, { 'debug': true,
         'protocols_whitelist': ['xdr-streaming', 'xhr-streaming', 'iframe-eventsource', 'iframe-htmlfile', 'xdr-polling', 'xhr-polling', 'iframe-xhr-polling', 'jsonp-polling']
     });
+
     sock.onopen = function() {
         console.log(msg)
-        sock.send(auth_json);
-        clearInterval(recInterval);
+        //console.log(sock.readyState)
+        //sock.send(auth_json);
+        //clearInterval(recInterval);
     };
     sock.onmessage =  function (event) {
         data = jQuery.parseJSON(event.data);
         console.log(data)
+        //console.log(sock.readyState)
     };
     sock.onclose =  function () {
         console.log('socket closed')
-        recInterval = setInterval(function () {
+        /*recInterval = setInterval(function () {
             connect();
-        }, 2000);
+        }, 2000);*/
     };
+  /*
+  for(var i = 1; i < 16; i++){
+     acknow = {'acknow': i} 
+     setInterval(sock.send(acknow), 500)
+  }*/
+ 
 }
 
+
+
 connect("http://127.0.0.1:8080/connect", msg);
+
+
+
+
+
+  var send_ack = function(msg){
+  if (sock && sock.readyState === 1) {
+        sock.send(msg);
+           }
+  else console.log('not OPEN')
+  }
+
+
+  
+  $('#design').on('click', function() {
+    send_ack($(this).attr("destination"))
+  });
 
 /* Info Updating */
 
   var solarsys = $("#solar-system");
 
-  $("#data .row a").click(function(e) {
+  $("#data .row a").on('click', function(e) {
     var ref = $(this).attr("class");
+    $('#design').attr("destination", ref)
+    console.log($('#design').attr("destination"))
     solarsys.removeClass().addClass(ref);
     $(this).parent().find('a').removeClass('active');
     $(this).addClass('active');
+
 
     //$.getJSON( "ajax/test.json", function( data ) {});
     
@@ -186,7 +217,7 @@ connect("http://127.0.0.1:8080/connect", msg);
   });
 
 
-});
+
 
 </script>
 

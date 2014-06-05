@@ -15,7 +15,7 @@ class SocketConnection(SockJSConnection):
     clients = set()
     SOCK_MSGS = { 'get_target': 'http://www.spacexplore.it:80/api/targets/',
                   'get_physics': 'http://www.spacexplore.it:80/api/physics/planets/',
-                  'variable': 'assignmnet'
+                  'destination': 'object'
                 }
 
     def send_error(self, message, error_type=None):
@@ -68,9 +68,9 @@ class SocketConnection(SockJSConnection):
         msg = json.loads(msg)
         if msg['query'] in self.SOCK_MSGS.keys():
             #print(msg)
-            if msg['query'] == 'variable':
+            if msg['query'] == 'destination':
                 # echo variable received via ack
-                self.send_message('variable assigned', msg['query'])
+                self.send_message(msg['object'], msg['query'])
                 return
             # query REST endpoint and return json
             response = self.get(msg)

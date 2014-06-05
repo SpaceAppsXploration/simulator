@@ -16,138 +16,139 @@
 
 <div id="container" class="data-close controls-close set-speed view-2D zoom-close">
     
-<div class="row">
-    <div id="navbar">
+  <div class="row">
+      <div id="navbar">
 
-      <h1>Choose your destination</h1>
+        <h1>Choose your destination</h1>
 
-    </div>
-</div>
-<div class="row" style="margin-top:20px;">
-    <div id="data" style="padding-top:45px;">
-    <div class="row" >
-      {% for t in targets %}
-        {% if t['slug'] == 'earth' %}
-        <a class="{{escape(t['slug'])}} active bodies-link" data-id="{{escape(str(t['id']))}}" title="{{escape(t['slug'])}}" href="#{{escape(t['slug'])}}speed" id="init">{{escape(t['name'])}}</a>
-        {% else %}
-        <a class="{{escape(t['slug'])}} bodies-link" data-id="{{escape(str(t['id']))}}" title="{{escape(t['slug'])}}" href="#{{escape(t['slug'])}}speed">{{escape(t['name'])}}</a>
-        {% end %}
-      {% end %}
-    </div>
-    <hr>
-    <div class="row">
-      <a class="btn btn-primary" id="design" title="go" destination="earth">Design Mission</a>  
-    </div>
-    </div>
-</div>
-<div class="row" style="height:85%;" style="margin-bottom:40px;">
-  <div class="col-sm-12">
-    <div id="controls" style="width:350px; height:60%;border:1px solid #FFF;">
-      <div class="row" style="margin-bottom:15px;">
-        <div class="col-sm-6">
-            <a class="btn" id="description" query="get_target">Description</a>
-        </div>
-        <div class="col-sm-6">
-            <a class="btn" id="physics" query="get_physics">Data</a>
-        </div>
       </div>
-      <div class="row"> 
-        <div class="col-sm-12" id="controls-data">
-
-        </div>
+  </div>
+  <div class="row" style="margin-top:20px;">
+    <div id="data" style="padding-top:45px;">
+      <div class="row" >
+        {% for t in targets %}
+          {% if t['slug'] == 'earth' %}
+          <a class="{{escape(t['slug'])}} active bodies-link" data-id="{{escape(str(t['id']))}}" title="{{escape(t['slug'])}}" href="#{{escape(t['slug'])}}speed" id="init">{{escape(t['name'])}}</a>
+          {% else %}
+          <a class="{{escape(t['slug'])}} bodies-link" data-id="{{escape(str(t['id']))}}" title="{{escape(t['slug'])}}" href="#{{escape(t['slug'])}}speed">{{escape(t['name'])}}</a>
+          {% end %}
+        {% end %}
+      </div>
+      <hr>
+      <div class="row">
+        <a class="btn btn-primary" id="design" title="go" destination="earth">Design Mission</a>  
       </div>
     </div>
   </div>
-    <div id="universe" class="scale-stretched">
-      <div id="galaxy">
-        <div id="solar-system" class="earth">
-          <div id="mercury" class="orbit">
-            <div class="pos">
-              <div class="planet">
-                <dl class="infos">
-                  <dd><span></span></dd>
-                </dl>
-              </div>
-            </div>
+
+  <div class="row" style="height:85%;" style="margin-bottom:40px;">
+    <div class="col-sm-12">
+      <div id="controls" style="width:350px; height:60%;border:1px solid #FFF;">
+        <div class="row" style="margin-bottom:15px;">
+          <div class="col-sm-6">
+              <a class="btn" id="description" query="get_target">Description</a>
           </div>
-          <div id="venus" class="orbit">
-            <div class="pos">
-              <div class="planet">
-                <dl class="infos">
-                  <dd><span></span></dd>
-                </dl>
-              </div>
-            </div>
+          <div class="col-sm-6">
+              <a class="btn" id="physics" query="get_physics">Data</a>
           </div>
-          <div id="earth" class="orbit">
-            <div class="pos">
-              <div class="orbit">
-                <div class="pos">
-                  <div class="moon"></div>
-                </div>
-              </div>
-              <div class="planet">
-                <dl class="infos">
-                  <dd><span></span></dd>
-                </dl>
-              </div>
-            </div>
-          </div>
-          <div id="mars" class="orbit">
-            <div class="pos">
-              <div class="planet">
-                <dl class="infos">
-                  <dd><span></span></dd>
-                </dl>
-              </div>
-            </div>
-          </div>
-          <div id="jupiter" class="orbit">
-            <div class="pos">
-              <div class="planet">
-                <dl class="infos">
-                  <dd><span></span></dd>
-                </dl>
-              </div>
-            </div>
-          </div>
-          <div id="saturn" class="orbit">
-            <div class="pos">
-              <div class="planet">
-                <div class="ring"></div>
-                <dl class="infos">
-                  <dd><span></span></dd>
-                </dl>
-              </div>
-            </div>
-          </div>
-          <div id="uranus" class="orbit">
-            <div class="pos">
-              <div class="planet">
-                <dl class="infos">
-                  <dd><span></span></dd>
-                </dl>
-              </div>
-            </div>
-          </div>
-          <div id="neptune" class="orbit">
-            <div class="pos">
-              <div class="planet">
-                <dl class="infos">
-                  <dd><span></span></dd>
-                </dl>
-              </div>
-            </div>
-          </div>
-          <div id="sun">
-            <dl class="infos">
-              <dd><span></span></dd>
-            </dl>
+        </div>
+        <div class="row"> 
+          <div class="col-sm-12" id="controls-data">
+
           </div>
         </div>
       </div>
     </div>
-</div> <!-- close row -->
+      <div id="universe" class="scale-stretched">
+        <div id="galaxy">
+          <div id="solar-system" class="earth">
+            <div id="mercury" class="orbit">
+              <div class="pos">
+                <div class="planet">
+                  <dl class="infos">
+                    <dd><span></span></dd>
+                  </dl>
+                </div>
+              </div>
+            </div>
+            <div id="venus" class="orbit">
+              <div class="pos">
+                <div class="planet">
+                  <dl class="infos">
+                    <dd><span></span></dd>
+                  </dl>
+                </div>
+              </div>
+            </div>
+            <div id="earth" class="orbit">
+              <div class="pos">
+                <div class="orbit">
+                  <div class="pos">
+                    <div class="moon"></div>
+                  </div>
+                </div>
+                <div class="planet">
+                  <dl class="infos">
+                    <dd><span></span></dd>
+                  </dl>
+                </div>
+              </div>
+            </div>
+            <div id="mars" class="orbit">
+              <div class="pos">
+                <div class="planet">
+                  <dl class="infos">
+                    <dd><span></span></dd>
+                  </dl>
+                </div>
+              </div>
+            </div>
+            <div id="jupiter" class="orbit">
+              <div class="pos">
+                <div class="planet">
+                  <dl class="infos">
+                    <dd><span></span></dd>
+                  </dl>
+                </div>
+              </div>
+            </div>
+            <div id="saturn" class="orbit">
+              <div class="pos">
+                <div class="planet">
+                  <div class="ring"></div>
+                  <dl class="infos">
+                    <dd><span></span></dd>
+                  </dl>
+                </div>
+              </div>
+            </div>
+            <div id="uranus" class="orbit">
+              <div class="pos">
+                <div class="planet">
+                  <dl class="infos">
+                    <dd><span></span></dd>
+                  </dl>
+                </div>
+              </div>
+            </div>
+            <div id="neptune" class="orbit">
+              <div class="pos">
+                <div class="planet">
+                  <dl class="infos">
+                    <dd><span></span></dd>
+                  </dl>
+                </div>
+              </div>
+            </div>
+            <div id="sun">
+              <dl class="infos">
+                <dd><span></span></dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div> <!-- close row -->
 
 </div><!-- close container -->
 </div> <!-- close col-sm-12 -->
@@ -228,7 +229,8 @@ connect(host, msg);
 
  
   $('#design').on('click', function(e) {
-    send_ack('{"query": "variable", "object": "' + $(this).attr("destination") + '"}')
+    send_ack('{"query": "destination", "object": "' + $(this).attr("destination") + '"}')
+    $('#container').css('display', 'none');
     e.defaultPrevented;
   });
 
@@ -261,6 +263,7 @@ connect(host, msg);
     send_ack('{"query": "get_physics", "object": "' + id + '"}')
     e.defaultPrevented;
   });
+
 </script>
 
 <style type="text/css">

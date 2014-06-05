@@ -4,6 +4,8 @@
 
     <script src="/static/js/jquery.min.js"></script>
     <script src="/static/js/sockjs-0.3.min.js"></script>
+    <script src="/static/js/crel.js"></script>
+    <script src="/static/js/json.human.js"></script>
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
     <link href="/static/css/targets.css"rel="stylesheet">
 
@@ -26,9 +28,9 @@
     <div class="row" >
       {% for t in targets %}
         {% if t['slug'] == 'earth' %}
-        <a class="{{escape(t['slug'])}} active" title="{{escape(t['slug'])}}" href="#{{escape(t['slug'])}}speed">{{escape(t['name'])}}</a>
+        <a class="{{escape(t['slug'])}} active bodies-link" data-id="{{escape(str(t['id']))}}" title="{{escape(t['slug'])}}" href="#{{escape(t['slug'])}}speed" id="init">{{escape(t['name'])}}</a>
         {% else %}
-        <a class="{{escape(t['slug'])}}" title="{{escape(t['slug'])}}" href="#{{escape(t['slug'])}}speed">{{escape(t['name'])}}</a>
+        <a class="{{escape(t['slug'])}} bodies-link" data-id="{{escape(str(t['id']))}}" title="{{escape(t['slug'])}}" href="#{{escape(t['slug'])}}speed">{{escape(t['name'])}}</a>
         {% end %}
       {% end %}
     </div>
@@ -39,9 +41,23 @@
     </div>
 </div>
 <div class="row" style="height:85%;" style="margin-bottom:40px;">
+  <div class="col-sm-12">
     <div id="controls" style="width:350px; height:60%;border:1px solid #FFF;">
-        <h2>Infos/Image from REST endpoints</h2>
+      <div class="row" style="margin-bottom:15px;">
+        <div class="col-sm-6">
+            <a class="btn" id="description" query="get_target">Description</a>
+        </div>
+        <div class="col-sm-6">
+            <a class="btn" id="physics" query="get_physics">Data</a>
+        </div>
+      </div>
+      <div class="row"> 
+        <div class="col-sm-12" id="controls-data">
+
+        </div>
+      </div>
     </div>
+  </div>
     <div id="universe" class="scale-stretched">
       <div id="galaxy">
         <div id="solar-system" class="earth">
@@ -138,16 +154,23 @@
 
 <script type="text/javascript">
 
-
-
 /* Opening Socket */
 
 msg = 'shake hand ' + Math.random();
 
 var recInterval = null;
 var sock = null;
+var host = 'http://simulation.spacexplore.it:8080/connect'
+
+var send_ack = function(msg){
+  if (sock && sock.readyState === 1) {
+        sock.send(msg);
+           }
+  else console.log('not OPEN')
+}
 
 var connect = function(url, auth_json) {
+
     sock = new SockJS(url, null, { 'debug': true,
         'protocols_whitelist': ['xdr-streaming', 'xhr-streaming', 'iframe-eventsource', 'iframe-htmlfile', 'xdr-polling', 'xhr-polling', 'iframe-xhr-polling', 'jsonp-polling']
     });
@@ -156,18 +179,42 @@ var connect = function(url, auth_json) {
         console.log(msg)
         //console.log(sock.readyState)
         //sock.send(auth_json);
-        //clearInterval(recInterval);
+        clearInterval(recInterval);
+        send_ack('{"query": "get_target", "object": "' + $('#init').attr("data-id") + '"}');
     };
-    sock.onmessage =  function (event) {
-        data = jQuery.parseJSON(event.data);
+    sock.onmessage =  function (e) {
+        data = jQuery.parseJSON(e.data);
         console.log(data)
-        //console.log(sock.readyState)
+        if(data.data.code == 1){$('#controls-data').text("no data for this body");}
+        else if (data.data_type == 'get_target') {
+          $('#controls').attr('body', data.data.id)
+          $('#controls-data').text("");
+
+          $('#controls-data').append('<img class="media-object img-rounded img-responsive" src="'+data.data.image_url+'"/>');
+          $('#controls-data').append('<p>'+data.data.characteristics+'</p>');
+
+        }
+        else if (data.data_type == 'get_physics'){
+          $('#controls-data').text("");
+          delete data.data.target
+          delete data.data.discover
+          delete data.data.name
+          var physics = JsonHuman.format(data.data);
+          //console.log(physics)
+          $('#controls-data').append('<div id="t-resp" class="table-responsive"></div>');
+          $('#t-resp').append(physics);
+        }
+        else { 
+          //data = jQuery.parseJSON(e.data);
+          console.log(data)
+          //console.log(sock.readyState)
+        }
     };
     sock.onclose =  function () {
         console.log('socket closed')
-        /*recInterval = setInterval(function () {
-            connect();
-        }, 2000);*/
+        recInterval = setInterval(function () {
+            connect(host, msg);
+        }, 2000);
     };
   /*
   for(var i = 1; i < 16; i++){
@@ -177,51 +224,70 @@ var connect = function(url, auth_json) {
  
 }
 
+connect(host, msg);
 
-
-connect("http://127.0.0.1:8080/connect", msg);
-
-
-
-
-
-  var send_ack = function(msg){
-  if (sock && sock.readyState === 1) {
-        sock.send(msg);
-           }
-  else console.log('not OPEN')
-  }
-
-
-  
-  $('#design').on('click', function() {
-    send_ack($(this).attr("destination"))
+ 
+  $('#design').on('click', function(e) {
+    send_ack('{"query": "variable", "object": "' + $(this).attr("destination") + '"}')
+    e.defaultPrevented;
   });
 
 /* Info Updating */
 
   var solarsys = $("#solar-system");
 
-  $("#data .row a").on('click', function(e) {
-    var ref = $(this).attr("class");
+  $(".bodies-link").on('click', function(e) {
+    /* show panel data */
+    var ref = $(this).attr("title");
     $('#design').attr("destination", ref)
     console.log($('#design').attr("destination"))
     solarsys.removeClass().addClass(ref);
     $(this).parent().find('a').removeClass('active');
     $(this).addClass('active');
-
-
-    //$.getJSON( "ajax/test.json", function( data ) {});
+    e.defaultPrevented;
     
+    /* send ack */
+    send_ack('{"query": "get_target", "object": "' + $(this).attr("data-id") + '"}')
+  });
+
+  $('#description').on('click', function(e) {
+    var id = $(this).parent().parent().parent().attr('body')
+    send_ack('{"query": "get_target", "object": "' + id + '"}')
     e.defaultPrevented;
   });
 
-
-
-
+  $('#physics').on('click', function(e) {
+    var id = $(this).parent().parent().parent().attr('body')
+    send_ack('{"query": "get_physics", "object": "' + id + '"}')
+    e.defaultPrevented;
+  });
 </script>
 
 <style type="text/css">
+
+#controls-data {
+  color: #fff;
+  font-size: 14px;
+}
+
+#controls-data > p {
+  text-align: center;
+}
+
+img {
+  margin: auto auto 10px;width:150px;height:auto;
+}
+
+#json-table {
+  color: #fff;
+  font-size:14px;
+}
+
+.jh-value > span{
+  padding-left:10px;
+  margin-left:10px;
+}
+
 /*
   Copyright (c) 2012 Julian Garnier
   Licensed under the MIT license
@@ -233,7 +299,7 @@ connect("http://127.0.0.1:8080/connect", msg);
 /* --------------------------------------------------------------------------- speed, circum, distances */
 
 .set-speed #sun dl.infos dd:after {
-  content: 'Orbit Velocity: 0 km/h \A Equatorial Circum.: 4,370,005 km \A Distance From Sun: 0 Km \A From Earth: 149,598,262 km';
+  content: 'Orbit Velocity: \A 0 km/h \A Equatorial Circum.: \A 4,370,005 km \A Distance From Sun: \A 0 Km \A From Earth: \A 149,598,262 km';
   white-space: pre; }
 
 .set-speed #mercury dl.infos dd:after {
@@ -261,11 +327,11 @@ connect("http://127.0.0.1:8080/connect", msg);
   white-space: pre;}
 
 .set-speed #uranus dl.infos dd:after {
-  content: 'Orbit Velocity: 24,477 km/h \A Equatorial Circum.: 159,354 km \A Distance From Sun: 2,870,658,186 km \A From Earth: np'; 
+  content: 'Orbit Velocity: \A 24,477 km/h \A Equatorial Circum.: \A 159,354 km \A Distance From Sun: \A 2,870,658,186 km \A From Earth: \A np'; 
   white-space: pre;}
 
 .set-speed #neptune dl.infos dd:after {
-  content: 'Orbit Velocity: 19,566 km/h \A Equatorial Circum.: 154,704 km \A Distance From Sun: 4,498,396,441 km \A From Earth: np'; 
+  content: 'Orbit Velocity: \A 19,566 km/h \A Equatorial Circum.: \A 154,704 km \A Distance From Sun: \A 4,498,396,441 km \A From Earth: \A np'; 
   white-space: pre;}
 
 </style>

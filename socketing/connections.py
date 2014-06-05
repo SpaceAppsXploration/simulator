@@ -3,32 +3,6 @@ import tornado.httpclient
 
 import json
 
-class RESTandCache(object):
-    '''
-        Class for Tornado to Async-Call the REST endpoints:
-        def get(self, what): client instantiation and fetch
-        def on_response(self, response): callback 
-    '''
-    def __init__(self, what):
-        self.urls = { 'get_targets': 'http://www.spacexplore.it:80/api/targets/',
-                      'get_physics': 'http://www.spacexplore.it:80/api/physics/planets/'
-                    }
-        self.what = what
-
-    @tornado.web.asynchronous
-    def _get(self, what):
-        url = self.urls[what]
-        #query = self.get_argument('q')
-        client = tornado.httpclient.AsyncHTTPClient()
-        client.fetch(url, self.on_response)
-                
-    def _on_response(self, response):
-        if response.error:
-            print("Error:", response.error)
-            return
-        else:
-            return json.loads(response.body.decode("utf-8"))
-
 class SocketConnection(SockJSConnection):
     '''
         Class for Receiving and Transmitting via sockets.
@@ -39,6 +13,10 @@ class SocketConnection(SockJSConnection):
     '''
 
     clients = set()
+    SOCK_MSGS = { 'get_target': 'http://www.spacexplore.it:80/api/targets/',
+                  'get_physics': 'http://www.spacexplore.it:80/api/physics/planets/',
+                  'variable': 'assignmnet'
+                }
 
     def send_error(self, message, error_type=None):
         """
@@ -60,6 +38,24 @@ class SocketConnection(SockJSConnection):
             'data': message,
         }))
 
+    def get(self, msg):
+        url = self.SOCK_MSGS[msg['query']]
+        q = msg['object']
+        #query = self.get_argument('q')
+        client = tornado.httpclient.HTTPClient()
+        response = client.fetch(url+q)
+        client.close()
+        return json.loads(response.body.decode("utf-8"))
+                
+    '''
+    def callback(self, response):
+        if response.error:
+            print("Error:", response.error)
+            return
+        else:
+            return response.body.decode("utf-8")
+    '''
+
     def on_open(self, request):
         """
         Request the client to authenticate and add them to client pool.
@@ -69,8 +65,19 @@ class SocketConnection(SockJSConnection):
         self.clients.add(self)
 
     def on_message(self, msg):
-        #echo only server
-        self.send_message({ 'status': 200, 'msg': str(msg) }, 'status')
+        msg = json.loads(msg)
+        if msg['query'] in self.SOCK_MSGS.keys():
+            #print(msg)
+            if msg['query'] == 'variable':
+                # echo variable received via ack
+                self.send_message('variable assigned', msg['query'])
+                return
+            # query REST endpoint and return json
+            response = self.get(msg)
+            self.send_message(response, msg['query'])
+        else:
+            #echo only server
+            self.send_message({ 'status': 200, 'msg': str(msg) }, 'status')
 
     def on_close(self):
         """

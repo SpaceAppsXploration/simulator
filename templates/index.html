@@ -3,23 +3,26 @@
     <title>Chronos Project - Simulator</title>
 
     <script src="/static/js/jquery.min.js"></script>
-    <script src="/static/js/sockjs-0.3.min.js"></script>
+    <script src="/static/js/sockjs-0.3.4.min.js"></script>
     <script src="/static/js/crel.js"></script>
     <script src="/static/js/json.human.js"></script>
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" type="text/css" media="screen">
+    <link href="/static/css/responsive.css" rel="stylesheet">
     <link href="/static/css/targets.css"rel="stylesheet">
+    <link href="/static/css/style.css" rel="stylesheet">
+    
 
 </head>
 <body>
-<div class="col-sm-12">
+<div class="col-sm-12" id="stage-1">
 
 
-<div id="container" class="data-close controls-close set-speed view-2D zoom-close">
+<div  class="data-close controls-close set-speed view-2D zoom-close">
     
   <div class="row">
       <div id="navbar">
 
-        <h1>Choose your destination</h1>
+        <h1 class="classic-title">Choose your destination</h1>
 
       </div>
   </div>
@@ -150,8 +153,163 @@
       </div>
   </div> <!-- close row -->
 
-</div><!-- close container -->
-</div> <!-- close col-sm-12 -->
+</div>
+
+</div> <!-- close col-sm-12 --><!-- close stage-1 -->
+
+<!-- ****************************************** STAGE 2 **************************************** -->
+
+<div id="stage-2" class="col-sm-12" style="display:none;">
+  <div class="row">
+      <div id="navbar"> 
+        <h1 class="classic-title">Choose Mission&apos;s Goal</h1>
+      </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+        <div class="container" style=""> 
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-6">
+                    <ul style="">
+                        <li><i class="glyphicon glyphicon-ok"></i>
+                            <span id="show-dest2"></span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="row row-first" style="">
+      <div class="col-md-9"></div>
+        <div class="col-md-3">
+          <ul class="breadcrumbs">
+              <li><a href="/">Start</a></li>
+              <li>Plan</li>
+          </ul>
+      </div>
+  </div>
+
+  <div class="row row-first">
+    <div class="col-md-3"></div>
+    <div class="col-md-9" style="margin: auto auto auto -40px;">
+        <div class="row">
+          {% for idx, m in enumerate(missions) %}
+            {% if idx == 3 %}
+              </div><div class="row">
+            {% end %}
+              <!-- Start Icon Box 1-->
+                  <div class="col-md-3 service-box service-center">
+                      <div class="service-boxed">
+                          <div class="service-icon" style="margin-top:-30px;">                           
+                                  <i class="glyphicon icon-medium-effect"></i> 
+                          </div>
+                          <div class="service-content"  style="height:70%;">
+                              <h4>{{m['name']}}</h4>
+                              <div style="width:200px;height:200px;margin: 40px auto auto -10px;"><img src="{{m['image_url']}}" style="margin: margin: 20px auto 10px auto;" class="media-object img-rounded img-responsive missions"/></div>
+                              <p style="margin: 20px auto 20px auto;">{{m['description']}}</p>
+                              <p><a mission="{{m['slug']}}" class="set-mission submit btn btn-default">Choose</a></p>
+                          </div>
+                      </div>
+                  </div>
+                  <!-- End Icon Box 1--> 
+              {% end %}
+          </div>                          
+      </div>
+  </div>
+        <div class="hr5" style="margin-top:40px; margin-bottom:40px;"></div>  
+</div><!-- close stage-2 -->
+
+<!-- ****************************************** STAGE 3 **************************************** -->
+
+<div id="stage-3" class="col-sm-12" style="display:none;">
+  <div class="row">
+      <div id="navbar"> 
+        <h1 class="classic-title">Choose Payloads</h1>
+      </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+        <div class="container" style=""> 
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-6">
+                    <ul style="">
+                        <li><i class="glyphicon glyphicon-ok"></i>
+                            <span id="show-dest3"></span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="row row-first" style="">
+      <div class="col-md-9"></div>
+        <div class="col-md-3">
+          <ul class="breadcrumbs">
+              <li><a href="/">Start</a></li>
+              <li>Plan</li>
+          </ul>
+      </div>
+  </div>
+
+
+  {% for idx, p in enumerate(payloads) %}
+    {% if idx == 0 %}
+    <div class="row row-first">
+    {% else %}
+    <div class="row">
+    {% end %}
+        <div class="col-md-9">
+          <div class="list-group">
+              <div class="list-group-item">
+                  <div class="media col-md-3">
+                      <figure class="pull-left">
+                          <img class="media-object img-rounded img-responsive"  src="http://placehold.it/80x80" alt="" >
+                      </figure>
+                  </div>
+                  <div class="col-md-6">
+                      <h4 class="list-group-item-heading"> {{p['name']}} </h4>
+                      <p class=""> {{p['description']}}
+                      </p>
+                  </div>
+                  <div class="col-md-3 text-center">
+                      <input type="checkbox" id="{{idx}}" class="checkbox" data-slug="{{p['slug']}}"/>
+                      <label for="{{idx}}">Assemble</label>
+                  </div>
+              </div>
+          </div>
+        </div>
+    </div>
+  {% end %}
+    
+    <div class="row">
+        <div class="col-md-9">
+             <div class="hr5" style="margin-top:40px; margin-bottom:40px;"></div>
+             <p style="text-align:right;"><a id="set-payload" class="btn btn-primary btn-lg">Payload Design Is A Go</a></p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-9">
+             <p style="text-align:right;padding-top:15px;"><a id="top" style="cursor:pointer;" onclick="scrollUp();return false;">top</a></p>
+        </div>
+    </div>
+
+
+</div> <!-- close stage-3 -->
+
+
 
 <script type="text/javascript">
 
@@ -161,76 +319,264 @@ msg = 'shake hand ' + Math.random();
 
 var recInterval = null;
 var sock = null;
-var host = 'http://simulation.spacexplore.it:8080/connect'
+var host = 'http://localhost:8080/connect'
 
-var send_ack = function(msg){
-  if (sock && sock.readyState === 1) {
-        sock.send(msg);
-           }
-  else console.log('not OPEN')
-}
+var Socketing = function(){
 
-var connect = function(url, auth_json) {
+  return {
+    
+    send_ack: function(msg, callback){
+      if (sock && sock.readyState === 1) {
+          sock.send(msg);
+          sock.onmessage = function(e, callback) {
 
-    sock = new SockJS(url, null, { 'debug': true,
+              data = jQuery.parseJSON(e.data);
+              console.log(data)
+              
+              if (data.data_type == 'get_target') {
+                /* get target */
+                $('#controls').attr('body', data.data.id)
+                $('#controls-data').text("");
+
+                $('#controls-data').append('<img class="media-object img-rounded img-responsive targets" src="'+data.data.image_url+'"/>');
+                $('#controls-data').append('<p>'+data.data.characteristics+'</p>');
+
+              }
+              else if (data.data_type == 'get_physics'){
+                if(data.data.code == 1){ $('#controls-data').text("no data for this body"); }
+                
+                $('#controls-data').text("");
+                delete data.data.target
+                delete data.data.discover
+                delete data.data.name
+                var physics = JsonHuman.format(data.data);
+                //console.log(physics)
+                $('#controls-data').append('<div id="t-resp" class="table-responsive"></div>');
+                $('#t-resp').append(physics);
+              }
+              else if (data.data_type == 'destination-mission'){
+                
+                if (data.data.code == 1) {
+                  console.log('CODE=1')
+                  Designing.printError(data.data.message+" : "+ data.data.content)
+                  
+                }
+                else {
+                     $('#stage-2').fadeOut('slow');
+                      $('#stage-3').fadeIn('slow');
+                      scrollUp()
+                      
+                      var target = Designing.getDestination()
+                      var mission = Designing.getMission()
+                      $('#show-dest3').text('Your mission is going to ' + target)
+                      $('#show-dest3').parent().parent().append('<li><i class="glyphicon glyphicon-ok"></i><span>Mission goal: '+ mission +'</span></li>')
+
+                }
+
+                
+                
+              }
+              else { 
+                /* echo client */ 
+                Socketing.return_echo(data)
+              }
+            
+          }
+        }
+
+    else console.log('not OPEN')
+    },
+    raise_error: function(error){
+      raise_error(error)
+    },
+    return_target: function(target){
+      return_target(target)
+    },
+    return_physics: function(physics){
+      return_physics(physics)
+    },
+    return_echo:  function(echo){
+        return_echo(echo)
+    }
+  }
+
+}();
+
+var Designing = function(){
+
+  var destination = null;
+  var mission = null;
+  var payload = {};
+  var bus = new Object();
+  var parameters = '';
+  var simError = null;
+
+  return {
+    setDestination: function(target){
+      this.destination = target
+      return false
+    },
+    getDestination: function(){
+      return this.destination
+    },
+    setMission: function(mission){
+      this.mission = mission
+      return false
+    },
+    getMission: function(){
+      return this.mission
+    },
+    addPayload: function(name){
+      this.payload['name'] = 'true'
+      return false
+    },
+    removePayload: function(name){
+      delete this.payload['name'] 
+    },
+    getPayload: function(){
+      return this.payload
+    },
+    addBus: function(name){
+      this.bus['name'] = 'bustrue' 
+      return false
+    },
+    removeBus: function(name){
+      delete this.bus['name']
+      return false
+    },
+    getBus: function(){
+      return this.bus
+    },
+    checkLoaded: function() {
+      return {"destination": this.destination, "mission": this.mission,
+              "bus": this.bus, "payload": this.payload}
+    },
+    printParams: function() {
+      this.parameters += '?destination=' + this.destination + '&mission=' + this.mission
+      /*bus_keys = Object.keys(this.bus)
+      payload_keys = Object.keys(this.payload)
+      for (var i = 0; i < bus_keys.length; i++){
+        this.parameters += '&' + bus_keys[i] + '=bus'
+      }
+      for (var i = 0; i < payload_keys.length; i++){
+        this.parameters += '&' + payload_keys[i] + '=bustrue'
+      }*/
+      this.parameters
+    },
+    getError: function(){
+      this.simError
+    },
+    setError: function(error){
+      this.SimError = error;
+
+    },
+    printError: function(error){
+      this.simError = error
+      alert(this.simError);
+    },
+
+  }
+}();
+
+
+
+
+    sock = new SockJS(host, null, { 'debug': true,
         'protocols_whitelist': ['xdr-streaming', 'xhr-streaming', 'iframe-eventsource', 'iframe-htmlfile', 'xdr-polling', 'xhr-polling', 'iframe-xhr-polling', 'jsonp-polling']
     });
 
     sock.onopen = function() {
         console.log(msg)
         //console.log(sock.readyState)
-        //sock.send(auth_json);
-        clearInterval(recInterval);
-        send_ack('{"query": "get_target", "object": "' + $('#init').attr("data-id") + '"}');
+        //clearInterval(recInterval);
+        Socketing.send_ack('{"query": "get_target", "object": "' + $('#init').attr("data-id") + '"}');
     };
-    sock.onmessage =  function (e) {
-        data = jQuery.parseJSON(e.data);
-        console.log(data)
-        if(data.data.code == 1){$('#controls-data').text("no data for this body");}
-        else if (data.data_type == 'get_target') {
-          $('#controls').attr('body', data.data.id)
-          $('#controls-data').text("");
-
-          $('#controls-data').append('<img class="media-object img-rounded img-responsive" src="'+data.data.image_url+'"/>');
-          $('#controls-data').append('<p>'+data.data.characteristics+'</p>');
-
-        }
-        else if (data.data_type == 'get_physics'){
-          $('#controls-data').text("");
-          delete data.data.target
-          delete data.data.discover
-          delete data.data.name
-          var physics = JsonHuman.format(data.data);
-          //console.log(physics)
-          $('#controls-data').append('<div id="t-resp" class="table-responsive"></div>');
-          $('#t-resp').append(physics);
-        }
-        else { 
-          //data = jQuery.parseJSON(e.data);
-          console.log(data)
-          //console.log(sock.readyState)
-        }
-    };
+    
     sock.onclose =  function () {
         console.log('socket closed')
-        recInterval = setInterval(function () {
-            connect(host, msg);
-        }, 2000);
+        //recInterval = setInterval(function () {
+        //    connect(host, msg);
+        //}, 2000);
     };
-  /*
-  for(var i = 1; i < 16; i++){
-     acknow = {'acknow': i} 
-     setInterval(sock.send(acknow), 500)
-  }*/
- 
+
+
+
+
+var scrollUp = function(){
+    $('html, body').animate({scrollTop:0}, 'slow');
+    /*$('.popupPeriod').fadeIn(1000, function(){
+        setTimeout(function(){$('.popupPeriod').fadeOut(2000);}, 3000);
+    });*/
 }
-
-connect(host, msg);
-
  
   $('#design').on('click', function(e) {
-    send_ack('{"query": "destination", "object": "' + $(this).attr("destination") + '"}')
-    $('#container').css('display', 'none');
+    //Socketing.send_ack('{"query": "destination", "object": "' + $(this).attr("destination") + '"}')
+    $('#stage-1').fadeOut('slow');
+    $('#stage-2').fadeIn('slow');
+    $('body').addClass('milkyway');
+    Designing.setDestination($(this).attr("destination"))
+    $('#show-dest2').text('Your mission is going to ' + $(this).attr("destination"))
+    console.log(Designing.getDestination())
+    e.defaultPrevented;
+  });
+
+  $('.set-mission').on('click', function(e) {
+    e.defaultPrevented;
+    //check destination+mission combo
+    Designing.setMission($(this).attr("mission"))
+    var check = Designing.checkLoaded()
+    var params = '?destination='+check['destination']+'&mission='+check['mission']
+    
+    var checkGoPL = function(param){
+      console.log(Designing.simError)
+      if (param =='stop') {
+        console.log('STOP')
+        console.log('In Error')
+        return 
+      }
+      else {
+        $('#stage-2').fadeOut('slow');
+        $('#stage-3').fadeIn('slow');
+        scrollUp()
+        
+        var target = Designing.getDestination()
+        var mission = Designing.getMission()
+        $('#show-dest3').text('Your mission is going to ' + target)
+        $('#show-dest3').parent().parent().append('<li><i class="glyphicon glyphicon-ok"></i><span>Mission goal: '+ mission +'</span></li>')
+
+      }
+
+    }
+    Socketing.send_ack('{"query": "destination-mission", "object": "' + params + '"}', checkGoPL) 
+
+    /*else {
+      $('#stage-2').fadeOut('slow');
+      $('#stage-3').fadeIn('slow');
+      scrollUp()
+      
+      var target = Designing.getDestination()
+      var mission = Designing.getMission()
+      $('#show-dest3').text('Your mission is going to ' + target)
+      $('#show-dest3').parent().parent().append('<li><i class="glyphicon glyphicon-ok"></i><span>Mission goal: '+ mission +'</span></li>')
+      console.log(Designing.checkLoaded())
+    }*/
+
+  });
+
+  $('#set-payload').on('click', function(e) {
+    //Socketing.send_ack('{"query": "destination", "object": "' + $(this).attr("destination") + '"}')
+    $('#stage-3').css('display', 'none');
+    $('#stage-4').css('display', 'block');
+    scrollUp()
+    // SET PAYLOADS
+
+    var target = Designing.getDestination()
+    var mission = Designing.getMission()
+    var payload = '';
+    $('#show-dest4').text('Your mission is going to ' + target)
+    $('#show-dest4').parent().parent().append('<li><i class="glyphicon glyphicon-ok"></i><span>Mission goal: '+ mission +'</span></li>')
+    $('#show-dest4').parent().parent().append('<li><i class="glyphicon glyphicon-ok"></i><span>Mission goal: '+ payload +'</span></li>')
+    console.log(Designing.checkLoaded())
     e.defaultPrevented;
   });
 
@@ -242,31 +588,44 @@ connect(host, msg);
     /* show panel data */
     var ref = $(this).attr("title");
     $('#design').attr("destination", ref)
-    console.log($('#design').attr("destination"))
+    //console.log($('#design').attr("destination"))
     solarsys.removeClass().addClass(ref);
     $(this).parent().find('a').removeClass('active');
     $(this).addClass('active');
     e.defaultPrevented;
     
     /* send ack */
-    send_ack('{"query": "get_target", "object": "' + $(this).attr("data-id") + '"}')
+    Socketing.send_ack('{"query": "get_target", "object": "' + $(this).attr("data-id") + '"}')
   });
 
   $('#description').on('click', function(e) {
     var id = $(this).parent().parent().parent().attr('body')
-    send_ack('{"query": "get_target", "object": "' + id + '"}')
+    console.log('click')
+    Socketing.send_ack('{"query": "get_target", "object": "' + id + '"}', console.log)
     e.defaultPrevented;
   });
 
   $('#physics').on('click', function(e) {
     var id = $(this).parent().parent().parent().attr('body')
-    send_ack('{"query": "get_physics", "object": "' + id + '"}')
+    Socketing.send_ack('{"query": "get_physics", "object": "' + id + '"}', console.log)
     e.defaultPrevented;
   });
 
 </script>
 
 <style type="text/css">
+body {
+  color: #fff;
+}
+
+#stage-1, #stage-2, #stage-3, #stage-4 {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
 
 #controls-data {
   color: #fff;
@@ -277,8 +636,10 @@ connect(host, msg);
   text-align: center;
 }
 
-img {
-  margin: auto auto 10px;width:150px;height:auto;
+.targets, .missions{
+  margin: auto auto 10px;
+  width:150px;
+  height:auto;
 }
 
 #json-table {
@@ -289,6 +650,58 @@ img {
 .jh-value > span{
   padding-left:10px;
   margin-left:10px;
+}
+
+.milkyway {
+    background-image: url(/static/images/webapp/background.svg); 
+    background-size: cover; 
+    height: 100%;
+    overflow-x:hidden;
+    /*overflow-y:hidden;*/
+    background-repeat: no-repeat;
+}
+
+div.list-group-item {
+    height:auto;
+    min-height:110px;
+    background-color: transparent;
+}
+div.list-group-item.active small {
+    color:#fff;
+}
+
+
+input[type="checkbox"].checkbox {
+    display: none;
+}
+input[type="checkbox"].checkbox + label {
+    display: inline;
+    position: relative;
+    background-color: #b94a48;
+    
+    /*label styling*/
+    padding: 2px 4px;
+    font-size: 1.2em;
+    font-weight: bold;
+    line-height: 14px;
+    color: #ffffff;
+    vertical-align: baseline;
+    white-space: nowrap;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+input[type="checkbox"].checkbox:checked + label {
+    background-color: #468847;
+}
+
+input[type="checkbox"].checkbox:disabled + label {
+    opacity: 0.5;
+}
+
+a#set-payload {
+    background-color: #468847;
 }
 
 /*

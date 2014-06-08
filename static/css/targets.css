@@ -10,10 +10,11 @@ body {
   font-size: 10px;
   font-family: 'Open Sans', sans-serif;
   font-weight: 300;
-  background-color: #08090A; }
+  background-color: #08090A;
+  overflow-y:scroll; }
 
-#container {
-
+#stage-2 {
+  color: #fff;
 }
 
 #universe {

@@ -15,7 +15,8 @@ class SocketConnection(SockJSConnection):
     clients = set()
     SOCK_MSGS = { 'get_target': 'http://www.spacexplore.it:80/api/targets/',
                   'get_physics': 'http://www.spacexplore.it:80/api/physics/planets/',
-                  'destination': 'object'
+                  'destination': 'object',
+                  'destination-mission': 'http://www.spacexplore.it:80/simulation/' 
                 }
 
     def send_error(self, message, error_type=None):
@@ -41,21 +42,13 @@ class SocketConnection(SockJSConnection):
     def get(self, msg):
         url = self.SOCK_MSGS[msg['query']]
         q = msg['object']
+        print(url+q)
         #query = self.get_argument('q')
         client = tornado.httpclient.HTTPClient()
         response = client.fetch(url+q)
         client.close()
         return json.loads(response.body.decode("utf-8"))
                 
-    '''
-    def callback(self, response):
-        if response.error:
-            print("Error:", response.error)
-            return
-        else:
-            return response.body.decode("utf-8")
-    '''
-
     def on_open(self, request):
         """
         Request the client to authenticate and add them to client pool.
@@ -65,6 +58,7 @@ class SocketConnection(SockJSConnection):
         self.clients.add(self)
 
     def on_message(self, msg):
+        print(msg)
         msg = json.loads(msg)
         if msg['query'] in self.SOCK_MSGS.keys():
             #print(msg)
@@ -72,12 +66,18 @@ class SocketConnection(SockJSConnection):
                 # echo variable received via ack
                 self.send_message(msg['object'], msg['query'])
                 return
+            elif msg['query'] == 'destination-mission':
+                response = self.get(msg)
+                self.send_message(response, msg['query'])
+                return
             # query REST endpoint and return json
             response = self.get(msg)
             self.send_message(response, msg['query'])
+            
+
         else:
             #echo only server
-            self.send_message({ 'status': 200, 'msg': str(msg) }, 'status')
+            self.send_message({ 'response': 200, 'msg': str(msg) }, 'wrong query')
 
     def on_close(self):
         """

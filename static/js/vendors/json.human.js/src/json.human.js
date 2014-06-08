@@ -136,8 +136,7 @@
             prefixer = makePrefixer(options.prefix || "jh");
 
         result = _format(data, prefixer);
-        result.className = result.className + " " + prefixer("root") + "table";
-        result.id = "json-table"
+        result.className = result.className + " " + prefixer("root");
 
         return result;
     }

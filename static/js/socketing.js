@@ -13,9 +13,11 @@
 
 var Socketing = {
     
-    send_ack: function(msg, callback){
+    send_ack: function(msg, callback, params){
       var data;
+      var params = params
         if (typeof callback == "function") {
+      
       var callback = callback;
         }
         else var callback = null;
@@ -37,15 +39,35 @@ var Socketing = {
                 callback(data.data)   
 
               }
-              else if (data.data_type == 'destination-mission'){
+              else if (data.data_type == 'destination-mission' 
+                        || data.data_type == 'set-payload'
+                           || data.data_type == 'set-bus') {
                 // checking if destination-mission combo is right
                 if (data.data.code == 1) {
                     //error in combo
-                    Designing.printError(data.data.message+" : "+ data.data.content)         
+                    if (data.data_type == 'destination-mission') DOMFlow.status.setMission(null)
+                    DOMFlow.status.printError(data.data.message+" : "+ data.data.content)
                 }
-                else callback() // >>> Go to stage 3
+                else {
+                    if (data.data_type == 'destination-mission') DOMFlow.status.setMission(params)
+                    if (data.data_type == 'set-payload') DOMFlow.status.setParams(params)
+                    if (data.data_type == 'set-bus') DOMFlow.status.setParams(params)
+                    callback() // >>> Go to stage 3 or 4
+                }
               }
-              
+
+              else if (data.data_type == 'get_ratings') {
+                console.log(data.data)
+                console.log(params)
+                callback(data.data) // >>> stage 5: printRatings
+                Socketing.send_ack('{"query": "get_missions", "object": "' +  params + '"}', DOMFlow.printMissions, null)
+              }
+
+              else if (data.data_type == 'get_missions') {
+
+                callback(data.data) // >>> stage 5: pritnMissions
+
+              }
               else { 
                 /* just echo */ 
                 Socketing.return_echo(data)

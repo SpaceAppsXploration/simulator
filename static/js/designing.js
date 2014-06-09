@@ -1,7 +1,7 @@
 /**!
 *
 * Designing
-* Store Data And User Choices
+* Constructor For Users Designing Choices 
 *
 * Copyright(c) 2014 Lorenzo <tunedconsulting@gmail.com>
 * MIT Licensed
@@ -10,73 +10,66 @@
 
 'use strict'
 
-var Designing = function(scope){
-  var scope = scope
-  var destination = null;
-  var mission = null;
-  var payload = {};
-  var bus = {};
-  var parameters = '';
-  var simError = null;
-};
+var Designing = function(a, b, c, d, e, f){
+  
+  var destination = a;
+  var mission = b;
+  var payloads = c;
+  var bus = d;
+  var params = e;
+  var simError = f;
 
-Designing.prototype.setDestination = function(target){
+
+  return {
+    setDestination: function(target){
       this.destination = target
       return false
-    };
-
-Designing.prototype.getDestination = function(){
+    },
+    getDestination: function(){
       return this.destination
-    };
-
-
-Designing.prototype.getDestination = function(){
-      return this.destination
-    };
-
-Designing.prototype.setMission = function(mission){
+    },
+    setMission: function(mission){
       this.mission = mission
       return false
-    };
-
-Designing.prototype.getMission = function(){
+    },
+    getMission: function(){
       return this.mission
-    };
-
-Designing.prototype.addPayload = function(name){
-      this.payload['name'] = 'true'
+    },
+    addPayload: function(name){
+      var payloads = this.payloads 
+      payloads.push(name)
       return false
-    };
-
-Designing.prototype.removePayload = function(name){
-      delete this.payload['name'] 
-    };
-
-Designing.prototype.getPayload= function(){
-      return this.payload
-    };
-
-Designing.prototype.addBus = function(name){
-      this.bus['name'] = 'bustrue' 
+    },
+    removePayload: function(name){
+      var payloads = this.payloads
+      var index = jQuery.inArray(name, payloads)
+      if (index > -1) {
+        payloads.splice(index, 1);
+      }
+    },
+    getPayloads: function(){
+      return this.payloads
+    },
+    addBus: function(name){
+      this.bus.push(name)
       return false
-    };
-
-Designing.prototype.removeBus = function(name){
-      delete this.bus['name']
+    },
+    removeBus: function(name){
+      var bus = this.bus
+      var index = jQuery.inArray(name, bus)
+      if (index > -1) {
+        bus.splice(index, 1);
+      }
       return false
-    };
-
-Designing.prototype.getBus = function(){
+    },
+    getBus: function(){
       return this.bus
-    };
-
-Designing.prototype.checkLoaded = function() {
+    },
+    checkLoaded: function() {
       return {"destination": this.destination, "mission": this.mission,
               "bus": this.bus, "payload": this.payload}
-    };
-
-Designing.prototype.printParams = function() {
-      this.parameters += '?destination=' + this.destination + '&mission=' + this.mission
+    },
+    printParams: function() {
       /*bus_keys = Object.keys(this.bus)
       payload_keys = Object.keys(this.payload)
       for (var i = 0; i < bus_keys.length; i++){
@@ -85,20 +78,21 @@ Designing.prototype.printParams = function() {
       for (var i = 0; i < payload_keys.length; i++){
         this.parameters += '&' + payload_keys[i] + '=bustrue'
       }*/
-      this.parameters
-    };
-
-Designing.prototype.getError = function(){
-      this.simError
-    };
-
-Designing.prototype.setError = function(error){
+      return this.params
+    },
+    setParams: function(params){
+      this.params = params
+    },
+    getError: function(){
+      return this.simError
+    },
+    setError: function(error){
       this.SimError = error;
-
-    };
-
-Designing.prototype.printError = function(error){
-      this.simError = error
-      alert(this.simError);
-    };
+      return false
+    },
+    printError: function(error){
+      return alert(error);
+    },
+  }
+};
 

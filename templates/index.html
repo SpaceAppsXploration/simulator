@@ -17,8 +17,9 @@
 
 </head>
 <body>
-<div class="col-sm-12" id="stage-1">
 
+
+<div class="col-sm-12" id="stage-1">
 
 <div  class="data-close controls-close set-speed view-2D zoom-close">
     
@@ -287,7 +288,7 @@
                       </p>
                   </div>
                   <div class="col-md-3 text-center">
-                      <input type="checkbox" id="{{idx}}" class="checkbox" data-slug="{{p['slug']}}"/>
+                      <input type="checkbox" id="{{idx}}" class="checkboxPL" data-slug="{{p['slug']}}"/>
                       <label for="{{idx}}">Assemble</label>
                   </div>
               </div>
@@ -305,13 +306,198 @@
 
     <div class="row">
         <div class="col-md-9">
-             <p style="text-align:right;padding-top:15px;"><a id="top" style="cursor:pointer;" onclick="scrollUp();return false;">top</a></p>
+             <p style="text-align:right;padding-top:15px;"><a id="top" style="cursor:pointer;" onclick="DOMFlow.scrollUp();return false;">top</a></p>
         </div>
     </div>
 
 
 </div> <!-- close stage-3 -->
 
+<!-- ****************************************** STAGE 4 **************************************** -->
+
+<div id="stage-4" class="col-sm-12" style="display:none;">
+  <div class="row">
+      <div id="navbar"> 
+        <h1 class="classic-title">Choose Bus</h1>
+      </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+        <div class="container" style=""> 
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-6">
+                    <ul style="">
+                        <li><i class="glyphicon glyphicon-ok"></i>
+                            <span id="show-dest4"></span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="row row-first" style="">
+      <div class="col-md-9"></div>
+        <div class="col-md-3">
+          <ul class="breadcrumbs">
+              <li><a href="/">Start</a></li>
+              <li>Plan</li>
+          </ul>
+      </div>
+  </div>
+
+{% for idx,comp in enumerate(bus_comps) %}
+    {% if idx == 0 %}
+    <div class="col-md-10">
+        <div class="row list-group-item" id="row{{idx}}">
+    {% end %}
+            
+                    <div class="col-md-6" id="check{% raw idx % 2 %}" >
+                        {% if idx == 0 or idx % 2 == 0 %}
+                        <div class="media col-md-3">
+                            <h4 class="list-group-item-heading"> Type: </h4>
+                            <p style="font-weight:bold;"> {% for t in bus_types %}
+                              {% if comp['pbtype'][0] == t['id'] %}
+                                  {{t['name']}} 
+                              {% end %}
+                              {% end %}
+                            </p>
+                        </div>
+                        {% else %}
+                        <div class="media col-md-3">
+                            
+                        </div>
+                        {% end %}
+                        <div class="col-md-6">
+                            <h4 class="list-group-item-heading"> {{comp['name']}} </h4>
+                            
+                            <p class=""> {{comp['description']}}
+                            </p>
+                        </div>
+                        <div class="col-md-3 text-center">
+                                <input type="checkbox" id="{{comp['slug']}}" class="checkboxBUS" data-slug="{{comp['slug']}}"/>
+                                <label for="{{comp['slug']}}">Assemble</label>
+                        </div>
+                    </div>
+
+    {% if idx == len(bus_comps)-1 %}
+        </div>
+    </div>
+    {% break %}
+    {% end %}
+
+    {% if idx == 1 or idx % 2 == 1 %}      
+        </div>
+    </div>
+    <div class="col-md-10">
+        <div class="row list-group-item" id="row{{idx}}">
+    {% end %}
+    
+    {% end %}
+     <div class="row">
+        <div class="col-md-9">
+             <div class="hr5" style="margin-top:40px; margin-bottom:40px;"></div>
+             <p style="text-align:right;"><a id="set-bus" class="btn btn-primary btn-lg">Bus Design Is A Go</a></p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-9">
+             <p style="text-align:right;padding-top:15px;"><a id="top" style="cursor:pointer;" onclick="DOMFlow.scrollUp();return false;">top</a></p>
+        </div>
+    </div>
+
+</div> <!-- close stage-4 -->
+
+<!-- ****************************************** STAGE 5 **************************************** -->
+
+<div id="stage-5" class="col-sm-12" style="display:none;">
+  <div class="row">
+      <div id="navbar"> 
+
+      </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+        <div class="container" style=""> 
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-6">
+                    <ul style="">
+                        <li><i class="glyphicon glyphicon-ok"></i>
+                            <span id="show-dest5"></span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="row row-first" style="">
+      <div class="col-md-9"></div>
+        <div class="col-md-3">
+          <ul class="breadcrumbs">
+              <li><a href="/">Start</a></li>
+              <li>Plan</li>
+          </ul>
+      </div>
+  </div>
+
+  <div class="container">
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+            <div class="hr5" style="margin-top:40px; margin-bottom:40px;"></div>
+            <h1 class="text-center">Mission Is A Go!</h1>
+            <div id="target" class="hr5" style="margin-top:40px; margin-bottom:40px;"></div>
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div style="width:99%;height:99%;margin: auto auto;"><img src="https://pbs.twimg.com/media/BgYG7GTCUAAG0Pt.jpg" style="margin: 10px auto 10px;" class="img-thumbnail"/></div>
+            <div class="hr5" style="margin-top:40px; margin-bottom:40px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" id="ratings-row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+            <div class="hr5" style="margin-top:40px; margin-bottom:40px;"></div>
+            <h1 class="text-center">Rating of your mission</h1>
+            <div class="hr5" style="margin-top:40px; margin-bottom:40px;"></div>
+              <div id="ratings"></div>
+            <div class="hr5" style="margin-top:40px; margin-bottom:40px;"></div>
+        </div>
+    </div>
+
+    <div class="row" id="missions-row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+            <div class="hr5" style="margin-top:40px; margin-bottom:40px;"></div>
+            <h1 class="text-center">Similar Missions from Space Agencies</h1>
+            <div id="target" class="hr5" style="margin-top:40px; margin-bottom:40px;"></div>
+
+            <div class="row" id="similars">
+                
+            </div>
+                  
+
+
+            <div id="target" class="hr5" style="margin-top:40px; margin-bottom:40px;"></div>
+        </div>
+    </div>
+
+
+  </div>
+
+</div> <!-- close stage-4 -->
 
 
 <script type="text/javascript">
@@ -332,43 +518,64 @@ sock.onclose = Socketing.onclose
 /** Socket is running**/
 
 /** User Choices Collector **/
-var Designing = new Designing(this)
+//var Designing = new Designing(this)
 
- 
+/** Choose Destination **/
 $('#design').on('click', function(e) {
-    DOMFlow.startDesign($(this))
+    var destination = $(this).attr('destination')
+    console.log('destination')
+    DOMFlow.startDesign(destination, Designing)
     e.defaultPrevented;
 });
 
+/** Choose Mission **/
 $('.set-mission').on('click', function(e) {
     e.defaultPrevented;
     //check destination+mission combo
-    Designing.setMission($(this).attr("mission"))
-    var check = Designing.checkLoaded()
-    var params = '?destination='+check['destination']+'&mission='+check['mission']
+    var mission = $(this).attr('mission')
+    console.log(mission)
+    var check = DOMFlow.status.getDestination()
+    var params = '?destination='+check+'&mission='+mission
+    console.log(params)
+    DOMFlow.status.setParams(params)
+    DOMFlow.status.payloads = []
+    DOMFlow.status.bus = []
 
-    Socketing.send_ack('{"query": "destination-mission", "object": "' + params + '"}', DOMFlow.goToBusDesign) 
+
+    Socketing.send_ack('{"query": "destination-mission", "object": "' + params + '"}', DOMFlow.goToPLDesign, mission) 
 
 });
 
+/** Choose Payload **/
   $('#set-payload').on('click', function(e) {
-    //Socketing.send_ack('{"query": "destination", "object": "' + $(this).attr("destination") + '"}')
-    $('#stage-3').css('display', 'none');
-    $('#stage-4').css('display', 'block');
-    scrollUp()
-    // SET PAYLOADS
-
-    var target = Designing.getDestination()
-    var mission = Designing.getMission()
-    var payload = '';
-    $('#show-dest4').text('Your mission is going to ' + target)
-    $('#show-dest4').parent().parent().append('<li><i class="glyphicon glyphicon-ok"></i><span>Mission goal: '+ mission +'</span></li>')
-    $('#show-dest4').parent().parent().append('<li><i class="glyphicon glyphicon-ok"></i><span>Mission goal: '+ payload +'</span></li>')
-    console.log(Designing.checkLoaded())
+    var params = DOMFlow.status.printParams()
+    var payloads = DOMFlow.status.getPayloads();
+    console.log('set-payload > ON CLICK '+params)
+    console.log(payloads)
+    if(payloads.length == 0) { return DOMFlow.status.printError('Want to waste fuel or do some littering?'); }
+    for (var i = 0; i<payloads.length; i++) params += '&'+payloads[i]+'=true'
+    console.log('set-payload > ON UPDATE '+params)
+    Socketing.send_ack('{"query": "set-payload", "object": "' + params + '"}', DOMFlow.goToBusDesign, params)
     e.defaultPrevented;
   });
 
-/* Homepage Info Updating */
+/** Choose Bus **/
+  $('#set-bus').on('click', function(e) {
+    var params = DOMFlow.status.printParams()
+    console.log('set-bus > ON CLICK '+params)
+    var bus = DOMFlow.status.getBus();
+    
+    if(bus.length == 0) { return DOMFlow.status.printError('Cannot send payloads in a bubble!'); }
+    for (var i = 0; i<bus.length; i++) params += '&'+bus[i]+'=bustrue'
+    console.log('set-bus > ON UPDATE '+params)
+    Socketing.send_ack('{"query": "set-bus", "object": "' + params + '"}', DOMFlow.takeOff, params)
+    e.defaultPrevented;
+  });
+
+
+
+
+/* Homepage Events Handlers */
 
 var solarsys = $("#solar-system");
 
@@ -400,6 +607,87 @@ $('#physics').on('click', function(e) {
   /* send ack */
   Socketing.send_ack('{"query": "get_physics", "object": "' + id + '"}', 
                      DOMFlow.getPhysics)
+});
+
+/* Payloads Page Events Handlers */
+
+/*(*/function UncheckAll(){ 
+      var w = document.getElementsByTagName('input'); 
+      for(var i = 0; i < w.length; i++){ 
+        if(w[i].type=='checkbox'){ 
+          w[i].checked = false; 
+        }
+      }
+}/*)($(window));*/ 
+
+
+$('.checkboxPL').on('change', function(){
+    var el = $(this).attr('data-slug')
+    //console.log(el)
+    var state = $(this).prop('checked')
+    if (state == true){
+        //console.log('ADD PL')
+        DOMFlow.status.addPayload(el)
+    }
+    else {
+        //console.log('REMOVE PL')
+        if (DOMFlow.containsElem(el, DOMFlow.status.payloads)) {
+            DOMFlow.status.removePayload(el)
+        }
+    }
+    
+    //console.log(DOMFlow.status.payloads)
+    
+});
+
+$('.checkboxBUS').on('change', function(){
+    var div = $(this).parent().parent()
+    
+    //console.log($(this).attr('checked'))
+    //console.log($(this).attr('data-slug'))
+    var el = $(this).attr('data-slug')
+    var state = $(this).prop('checked')
+    if (state == true){
+        DOMFlow.status.addBus(el)
+        //console.log(div1)
+        if (div.attr('id') == 'check0') {
+              //console.log('left checkbox')
+              box = div.next().find('input[type="checkbox"]')
+              box.prop('disabled', true)
+
+
+        }
+        else if(div.attr('id') == 'check1') {
+            //console.log('right checkbox')
+            box = div.prev().find('input[type="checkbox"]')
+            //console.log(box)
+            box.prop('disabled', true)
+            //console.log(box.attr('disabled'))
+
+            }
+    }
+    else {
+        if (DOMFlow.containsElem(el, DOMFlow.status.bus)) {
+            DOMFlow.status.removeBus(el)
+        }
+        //console.log(div1)
+        if (div.attr('id') == 'check0') {
+              //console.log('left checkbox')
+              box = div.next().find('input[type="checkbox"]')
+              box.removeAttr('disabled')
+
+
+        }
+        else if(div.attr('id') == 'check1') {
+            //console.log('right checkbox')
+            box = div.prev().find('input[type="checkbox"]')
+            box.removeAttr('disabled')
+            //console.log(box.attr('disabled'))
+
+            }
+    }
+    
+    //console.log(DOMFlow.status.bus)
 });
 
 </script>
@@ -462,10 +750,10 @@ div.list-group-item.active small {
 }
 
 
-input[type="checkbox"].checkbox {
+input[type="checkbox"].checkboxPL, input[type="checkbox"].checkboxBUS {
     display: none;
 }
-input[type="checkbox"].checkbox + label {
+input[type="checkbox"].checkboxPL + label, input[type="checkbox"].checkboxBUS + label {
     display: inline;
     position: relative;
     background-color: #b94a48;
@@ -483,11 +771,11 @@ input[type="checkbox"].checkbox + label {
     -moz-border-radius: 3px;
     border-radius: 3px;
 }
-input[type="checkbox"].checkbox:checked + label {
+input[type="checkbox"].checkboxPL:checked + label, input[type="checkbox"].checkboxBUS:checked + label {
     background-color: #468847;
 }
 
-input[type="checkbox"].checkbox:disabled + label {
+input[type="checkbox"].checkboxPL:disabled + label, input[type="checkbox"].checkboxBUS:disabled + label {
     opacity: 0.5;
 }
 

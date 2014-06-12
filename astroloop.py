@@ -17,16 +17,17 @@ settings = {
 
 if __name__ == '__main__':
     import logging
+
     logging.getLogger().setLevel(logging.DEBUG)
 
-    SocketRouter  = SockJSRouter(SocketConnection, '/connect')
+    SocketRouter = SockJSRouter(SocketConnection, '/connect')
 
     app = tornado.web.Application(
-            [(r"/", IndexHandler),
-            (r"/pointer_test", TestHandler)] + \
-            SocketRouter.urls,
-            (r"/static/(.*)", web.StaticFileHandler, {"path": settings['static_path']}),
-            **settings
+        [(r"/", IndexHandler),
+         (r"/pointer_test", TestHandler)] + \
+        SocketRouter.urls,
+        (r"/static/(.*)", web.StaticFileHandler, {"path": settings['static_path']}),
+        **settings
     )
     app.listen(8080)
     ioloop.IOLoop.instance().start()

@@ -1,22 +1,6 @@
-<html>
-<head>
-    <title>Chronos Project - Simulator</title>
+{% extends "base.html" %}
 
-    <script src="/static/js/vendors/jquery.min.js"></script>
-    <script src="/static/js/vendors/sockjs-0.3.4.min.js"></script>
-    <script src="/static/js/designing.js"></script>
-    <script src="/static/js/socketing.js"></script>
-    <script src="/static/js/domflow.js"></script>
-    <script src="/static/js/vendors/crel/crel.min.js"></script>
-    <script src="/static/js/vendors/json.human.js/src/json.human.js"></script>
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" type="text/css" media="screen">
-    <link href="/static/css/responsive.css" rel="stylesheet">
-    <link href="/static/css/targets.css"rel="stylesheet">
-    <link href="/static/css/style.css" rel="stylesheet">
-    
-
-</head>
-<body>
+{% block body %}
 
 
 <div class="col-sm-12" id="stage-1">
@@ -469,7 +453,6 @@
     <div class="row" id="ratings-row">
         <div class="col-md-1"></div>
         <div class="col-md-10">
-            <div class="hr5" style="margin-top:40px; margin-bottom:40px;"></div>
             <h1 class="text-center">Rating of your mission</h1>
             <div class="hr5" style="margin-top:40px; margin-bottom:40px;"></div>
               <div id="ratings"></div>
@@ -510,7 +493,7 @@ var host = 'http://localhost:8080/connect'
 
 /** Start Socket **/
 sock = new SockJS(host, null, { 'debug': true,
-    'protocols_whitelist': ['xdr-streaming', 'xhr-streaming', 'iframe-eventsource', 'iframe-htmlfile', 'xdr-polling', 'xhr-polling', 'iframe-xhr-polling', 'jsonp-polling']
+    'protocols_whitelist': ['websocket', 'xdr-streaming', 'xhr-streaming', 'iframe-eventsource', 'iframe-htmlfile', 'xdr-polling', 'xhr-polling', 'iframe-xhr-polling', 'jsonp-polling']
 });
 
 sock.onopen = Socketing.onopen
@@ -831,6 +814,6 @@ a#set-payload {
 
 </style>
 
-</body>
-</html>
 
+
+{% end %}
